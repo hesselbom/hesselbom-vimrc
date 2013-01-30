@@ -37,3 +37,6 @@ set cursorline cursorcolumn
 " Ending braces
 imap ( ()<left>
 imap { {}<left>
+imap ' ''<left>
+imap " ""<left>
+imap [ []<left>
