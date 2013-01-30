@@ -33,3 +33,7 @@ imap <S-Tab> <Esc><<i
 
 " Cursor position
 set cursorline cursorcolumn
+
+" Ending braces
+imap ( ()<left>
+imap { {}<left>
