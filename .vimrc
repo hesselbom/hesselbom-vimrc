@@ -1,3 +1,6 @@
+" Plugins
+so ~/hesselbom-vimrc/plugins/autoclose.vim
+
 " Various
 syntax on
 colorscheme jellybeans
@@ -33,10 +36,3 @@ imap <S-Tab> <Esc><<i
 
 " Cursor position
 set cursorline cursorcolumn
-
-" Ending braces
-imap ( ()<left>
-imap { {}<left>
-imap ' ''<left>
-imap " ""<left>
-imap [ []<left>
