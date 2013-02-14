@@ -1,0 +1,3 @@
+﻿#!/bin/bash
+ln -s hesselbom-vimrc/.vim .vim
+ln -s hesselbom-vimrc/.vimrc .vimrc
