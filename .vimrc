@@ -6,6 +6,7 @@ syntax on
 colorscheme jellybeans
 map <F2> :echo 'Current time is ' . strftime('%c')<CR>
 set number
+set mouse=a
 
 " Encoding
 set enc=utf-8
