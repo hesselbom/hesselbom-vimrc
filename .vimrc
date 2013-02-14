@@ -37,3 +37,6 @@ imap <S-Tab> <Esc><<i
 
 " Cursor position
 set cursorline cursorcolumn
+
+" Run modules
+autocmd VimEnter * NERDTree
