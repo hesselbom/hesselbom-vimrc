@@ -40,3 +40,6 @@ set cursorline cursorcolumn
 
 " Run modules
 autocmd VimEnter * NERDTree
+
+" Global variables
+let g:nerdtree_tabs_open_on_console_startup=1
