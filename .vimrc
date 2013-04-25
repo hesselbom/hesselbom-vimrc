@@ -39,4 +39,6 @@ set cursorline cursorcolumn
 autocmd VimEnter * NERDTree
 
 " Global variables
-let g:nerdtree_tabs_open_on_console_startup=1
+let NERDTreeShowHidden = 1
+let g:nerdtree_tabs_open_on_console_startup = 1
+let g:nerdtree_tabs_no_startup_for_diff = 0
