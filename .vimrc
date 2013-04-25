@@ -12,6 +12,15 @@ set ignorecase    " ignore case when searching
 set smartcase     " ignore case if search pattern is all lowercase,  case-sensitive otherwise
 set hlsearch      " highlight search terms
 set incsearch     " show search matches as you type
+set history=1000         " remember more commands and search history
+set undolevels=1000      " use many muchos levels of undo
+set wildignore=*.swp,*.bak,*.pyc,*.class
+set title                " change the terminal's title
+set visualbell           " don't beep
+set noerrorbells         " don't beep
+set nobackup
+set noswapfile
+set pastetoggle=<F2>
 
 " Encoding
 set enc=utf-8
