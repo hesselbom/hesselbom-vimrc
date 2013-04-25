@@ -5,6 +5,7 @@ map <F2> :echo 'Current time is ' . strftime('%c')<CR>
 set number
 set mouse=a
 set paste
+set hidden
 
 " Encoding
 set enc=utf-8
