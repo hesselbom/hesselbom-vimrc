@@ -6,6 +6,12 @@ set number
 set mouse=a
 set paste
 set hidden
+set backspace=indent,eol,start " allow backspacing over everything in insert mode
+set showmatch     " set show matching parenthesis
+set ignorecase    " ignore case when searching
+set smartcase     " ignore case if search pattern is all lowercase,  case-sensitive otherwise
+set hlsearch      " highlight search terms
+set incsearch     " show search matches as you type
 
 " Encoding
 set enc=utf-8
@@ -27,8 +33,10 @@ filetype indent on
 
 " Tabs
 set expandtab
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=4  " number of spaces to use for autoindenting
+set tabstop=4     " a tab is four spaces
+set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
+set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
 
 nmap <S-Tab> <<
 nmap <Tab> >>
