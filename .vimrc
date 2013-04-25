@@ -1,7 +1,3 @@
-" Plugins
-so ~/hesselbom-vimrc/plugins/autoclose.vim
-so ~/hesselbom-vimrc/plugins/tabname.vim
-
 " Various
 syntax on
 colorscheme jellybeans
