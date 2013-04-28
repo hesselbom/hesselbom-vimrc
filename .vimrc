@@ -1,3 +1,9 @@
+" Disable arrow keys
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+
 " Various
 syntax on
 colorscheme jellybeans
