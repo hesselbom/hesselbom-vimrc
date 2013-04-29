@@ -37,6 +37,8 @@ set fileencodings=ucs-bom,utf8,prc
 " Directions
 map <M-Left> b
 map <M-Right> w
+nnoremap <C-j> 5j
+nnoremap <C-k> 5k
 
 " Scroll
 set scrolloff=7
