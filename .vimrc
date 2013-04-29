@@ -76,4 +76,6 @@ let NERDTreeShowHidden = 1
 " let g:nerdtree_tabs_open_on_console_startup = 1
 " let g:nerdtree_tabs_no_startup_for_diff = 0
 let mapleader = ","
-let g:miniBufExplMapWindowNavVim = 1
+" let g:miniBufExplMapWindowNavVim = 1
+nnoremap <C-H> :bp<cr>
+nnoremap <C-L> :bn<cr>
