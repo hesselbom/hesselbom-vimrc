@@ -39,6 +39,8 @@ map <M-Left> b
 map <M-Right> w
 nnoremap <C-j> 5j
 nnoremap <C-k> 5k
+vnoremap <C-j> 5j
+vnoremap <C-k> 5k
 
 " Scroll
 set scrolloff=7
