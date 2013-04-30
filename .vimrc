@@ -11,6 +11,7 @@ map <F2> :echo 'Current time is ' . strftime('%c')<CR>
 set number
 set relativenumber
 set mouse=a
+set clipboard=unnamed
 set paste
 set hidden
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
