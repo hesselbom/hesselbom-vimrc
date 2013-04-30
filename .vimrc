@@ -1,4 +1,4 @@
-" Disable arrow keys
+﻿" Disable arrow keys
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
@@ -9,6 +9,7 @@ syntax on
 colorscheme jellybeans
 map <F2> :echo 'Current time is ' . strftime('%c')<CR>
 set number
+set relativenumber
 set mouse=a
 set paste
 set hidden
