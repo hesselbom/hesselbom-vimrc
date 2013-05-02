@@ -7,12 +7,10 @@ nnoremap <right> <nop>
 " Various
 syntax on
 colorscheme jellybeans
-map <F2> :echo 'Current time is ' . strftime('%c')<CR>
 set number
 set relativenumber
 set mouse=a
 set clipboard=unnamed
-set paste
 set hidden
 set backspace=indent,eol,start " allow backspacing over everything in insert mode
 set showmatch     " set show matching parenthesis
@@ -90,3 +88,5 @@ nnoremap <C-L> :bn<cr>
 
 nnoremap <S-Enter> O<Esc>
 nnoremap <CR> o<Esc>
+
+inoremap kj <Esc>
