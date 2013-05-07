@@ -30,7 +30,7 @@ set pastetoggle=<F2>
 
 " Encoding
 set enc=utf-8
-set bomb
+set nobomb
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf8,prc
 
