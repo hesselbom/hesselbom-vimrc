@@ -76,6 +76,7 @@ set cursorline cursorcolumn
 " autocmd VimEnter * NERDTree
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/plugin/closetag.vim
+autocmd FileType php,phtml set omnifunc=phpcomplete#CompletePHP
 
 " Global variables
 let NERDTreeShowHidden = 1
