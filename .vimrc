@@ -8,7 +8,6 @@ nnoremap <right> <nop>
 syntax on
 colorscheme jellybeans
 set number
-set relativenumber
 set mouse=a
 set clipboard=unnamed
 set hidden
