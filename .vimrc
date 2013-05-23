@@ -26,6 +26,8 @@ set noerrorbells         " don't beep
 set nobackup
 set noswapfile
 set pastetoggle=<F2>
+set guioptions-=T
+set guioptions-=r
 
 " Encoding
 set enc=utf-8
