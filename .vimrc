@@ -77,6 +77,8 @@ autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/plugin/closetag.vim
 autocmd FileType php,phtml set omnifunc=phpcomplete#CompletePHP
 
+autocmd BufLeave * ccl
+
 " Global variables
 let NERDTreeShowHidden = 1
 let g:nerdtree_tabs_open_on_gui_startup = 0
@@ -86,11 +88,9 @@ let mapleader = ","
 " let g:miniBufExplMapWindowNavVim = 1
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_max_height = 20
+let Grep_Default_Options = '-rs'
 
 nnoremap <C-H> :bp<cr>
 nnoremap <C-L> :bn<cr>
-
-nnoremap <S-Enter> O<Esc>
-nnoremap <CR> o<Esc>
 
 inoremap kj <Esc>
