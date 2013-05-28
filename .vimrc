@@ -90,6 +90,8 @@ let mapleader = ","
 " let g:miniBufExplMapWindowNavVim = 1
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_max_height = 20
+let g:ctrlp_max_files = 100000
+let g:ctrlp_custom_ignore='.git$|\tmp$'
 let Grep_Default_Options = '-rs'
 
 nnoremap <C-H> :bp<cr>
