@@ -1,4 +1,4 @@
-﻿" Disable arrow keys
+" Disable arrow keys
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
@@ -69,6 +69,10 @@ set smarttab      " insert tabs on the start of a line according to shiftwidth, 
 nmap <S-Tab> <<
 nmap <Tab> >>
 imap <S-Tab> <Esc><<i
+
+" MacVim
+nmap <D-Right> :maca _cycleWindowsBackwards:<CR>
+nmap <D-Left> :maca _cycleWindows:<CR>
 
 " Cursor position
 set cursorline cursorcolumn
