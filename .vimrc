@@ -74,8 +74,8 @@ nmap <Tab> >>
 imap <S-Tab> <Esc><<i
 
 " MacVim
-nmap <D-Right> :maca _cycleWindowsBackwards:<CR>
-nmap <D-Left> :maca _cycleWindows:<CR>
+noremap ˛ :maca _cycleWindowsBackwards:<CR>
+noremap ﬁ :maca _cycleWindows:<CR>
 
 " Cursor position
 set cursorline cursorcolumn
