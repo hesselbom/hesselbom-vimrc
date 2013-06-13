@@ -31,6 +31,7 @@ set guioptions-=r
 set wildignore+=.DS_Store
 set wildignore+=.sass-cache
 set wildignore+=node_modules
+set wildignore+=mage--*
 
 " Encoding
 set enc=utf-8
