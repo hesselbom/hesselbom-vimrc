@@ -28,6 +28,9 @@ set noswapfile
 set pastetoggle=<F2>
 set guioptions-=T
 set guioptions-=r
+set wildignore+=.DS_Store
+set wildignore+=.sass-cache
+set wildignore+=node_modules
 
 " Encoding
 set enc=utf-8
