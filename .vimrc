@@ -77,6 +77,8 @@ imap <S-Tab> <Esc><<i
 " MacVim
 noremap ˛ :maca _cycleWindowsBackwards:<CR>
 noremap ﬁ :maca _cycleWindows:<CR>
+noremap ˘ :tabprev<CR>
+noremap ﬂ :tabnext<CR>
 
 " Cursor position
 set cursorline cursorcolumn
