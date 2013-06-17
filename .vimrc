@@ -26,8 +26,7 @@ set noerrorbells         " don't beep
 set nobackup
 set noswapfile
 set pastetoggle=<F2>
-set guioptions-=T
-set guioptions-=r
+set guioptions=          " Remove gui elements
 set wildignore+=.DS_Store
 set wildignore+=.sass-cache
 set wildignore+=node_modules
