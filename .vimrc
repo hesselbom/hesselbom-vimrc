@@ -32,6 +32,7 @@ set wildignore+=.DS_Store
 set wildignore+=.sass-cache
 set wildignore+=node_modules
 set wildignore+=mage--*
+set laststatus=2         " Always show status bar
 
 " Encoding
 set enc=utf-8
@@ -50,10 +51,6 @@ vnoremap <C-k> 5k
 " Scroll
 set scrolloff=7
 set scroll=15
-" noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 10, 2)<CR>
-" noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 10, 2)<CR>
-" noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
-" noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 " Indent
 set autoindent
@@ -84,7 +81,6 @@ noremap ﬂ :tabnext<CR>
 set cursorline cursorcolumn
 
 " Run modules
-" autocmd VimEnter * NERDTree
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/plugin/closetag.vim
 autocmd FileType php,phtml set omnifunc=phpcomplete#CompletePHP
@@ -92,12 +88,7 @@ autocmd FileType php,phtml set omnifunc=phpcomplete#CompletePHP
 autocmd BufLeave * ccl
 
 " Global variables
-let NERDTreeShowHidden = 1
-let g:nerdtree_tabs_open_on_gui_startup = 0
-" let g:nerdtree_tabs_open_on_console_startup = 1
-" let g:nerdtree_tabs_no_startup_for_diff = 0
 let mapleader = ","
-" let g:miniBufExplMapWindowNavVim = 1
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_max_height = 20
 let g:ctrlp_max_files = 100000
