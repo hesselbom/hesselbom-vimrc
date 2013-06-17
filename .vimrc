@@ -101,7 +101,9 @@ let g:ctrlp_max_height = 20
 let g:ctrlp_max_files = 100000
 let Grep_Default_Options = '-rs'
 
+" Buffers
 nnoremap <C-H> :bp<cr>
 nnoremap <C-L> :bn<cr>
 
-inoremap kj <Esc>
+" CtrlP
+nnoremap π :CtrlPBuffer<cr>
