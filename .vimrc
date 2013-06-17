@@ -60,6 +60,9 @@ filetype on
 filetype plugin on
 filetype indent on
 
+set list
+set listchars=tab:>-,trail:·,extends:>,precedes:<,nbsp:&
+
 " Tabs
 set expandtab
 set shiftwidth=4  " number of spaces to use for autoindenting
