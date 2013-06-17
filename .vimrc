@@ -6,7 +6,7 @@ nnoremap <right> <nop>
 
 " Various
 syntax on
-colorscheme jellybeans
+colorscheme twilight
 set number
 set mouse=a
 set clipboard=unnamed
