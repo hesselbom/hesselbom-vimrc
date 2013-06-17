@@ -74,10 +74,17 @@ nmap <Tab> >>
 imap <S-Tab> <Esc><<i
 
 " MacVim
-noremap ˛ :maca _cycleWindowsBackwards:<CR>
-noremap ﬁ :maca _cycleWindows:<CR>
+" Alt w hl to cycle macvim windows
+noremap Ω˛ :maca _cycleWindowsBackwards:<CR>
+noremap Ωﬁ :maca _cycleWindows:<CR>
+" Alt hl to cycle tabs
 noremap ˘ :tabprev<CR>
 noremap ﬂ :tabnext<CR>
+" Alt keys to toggle window
+nnoremap ª :wincmd k<CR>
+nnoremap √ :wincmd j<CR>
+nnoremap ˛ :wincmd h<CR>
+nnoremap ﬁ :wincmd l<CR>
 
 " Cursor position
 set cursorline cursorcolumn
