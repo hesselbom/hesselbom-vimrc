@@ -4,6 +4,10 @@ nnoremap <down> <nop>
 nnoremap <left> <nop>
 nnoremap <right> <nop>
 
+" Remap j and k to visual
+nnoremap j gj
+nnoremap k gk
+
 " Bundles
 filetype off
 set rtp+=~/.vim/bundle/vundle/
@@ -42,6 +46,7 @@ set wildignore+=.sass-cache
 set wildignore+=node_modules
 set wildignore+=mage--*
 set laststatus=2         " Always show status bar
+set complete=.,b,u,]     " pull from keywords in the current file, other buffers (closed or still open), and from the current tags file
 
 " Encoding
 set enc=utf-8
