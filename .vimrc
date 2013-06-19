@@ -8,6 +8,10 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
+" Map jk and kj to <Esc>
+inoremap jk <Esc>
+inoremap kj <Esc>
+
 " Remap j and k to visual
 nnoremap j gj
 nnoremap k gk
