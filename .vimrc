@@ -16,16 +16,6 @@ inoremap kj <Esc>
 nnoremap j gj
 nnoremap k gk
 
-" Bundles
-filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-Bundle 'gmarik/vundle'
-Bundle 'Valloric/YouCompleteMe'
-
-filetype plugin indent on
-
 " Various
 syntax on
 colorscheme twilight
@@ -49,7 +39,6 @@ set noswapfile
 set pastetoggle=<F2>
 set guioptions=          " Remove gui elements
 set laststatus=2         " Always show status bar
-set complete=.,b,u,]     " pull from keywords in the current file, other buffers (closed or still open), and from the current tags file
 
 " Ignore
 set wildignore=*.swp,*.bak,*.pyc,*.class
