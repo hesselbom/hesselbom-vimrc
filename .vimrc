@@ -16,9 +16,15 @@ inoremap kj <Esc>
 nnoremap j gj
 nnoremap k gk
 
+" Color scheme
+if has('gui_running')
+    colorscheme twilight
+else
+    colorscheme zenburn
+endif
+
 " Various
 syntax on
-colorscheme twilight
 set number
 set mouse=a
 set clipboard=unnamed
