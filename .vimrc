@@ -12,10 +12,6 @@ inoremap <right> <nop>
 inoremap jk <Esc>
 inoremap kj <Esc>
 
-" Remap j and k to visual
-nnoremap j gj
-nnoremap k gk
-
 " Color scheme
 if has('gui_running')
     colorscheme twilight
