@@ -29,5 +29,7 @@ bind j:cmd        focus down
 # Window Hints
 bind e:cmd hint ASDFGHJKLQWERTYUIOPCVBN # use whatever keys you want
 
-bind g:cmd grid padding:5 0:6,2
-bind g:cmd,shift grid padding:5 0:6,5
+bind g:cmd grid padding:5 0:5,2
+bind g:cmd,shift grid padding:5 0:5,5
+bind g:cmd,alt grid padding:5 0:6,2
+bind g:cmd,alt,shift grid padding:5 0:6,5
