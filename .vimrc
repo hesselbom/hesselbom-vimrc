@@ -14,9 +14,18 @@ inoremap kj <Esc>
 
 " Color scheme
 if has('gui_running')
-    colorscheme twilight
+    colorscheme zenburn-hesselbom
 else
-    colorscheme zenburn
+    colorscheme zenburn-hesselbom
+endif
+
+" Font
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=Inconsolata\ 8
+  elseif has("gui_win32")
+    set guifont=Consolas:h11:cANSI
+  endif
 endif
 
 " Various
