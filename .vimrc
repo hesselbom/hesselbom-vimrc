@@ -14,9 +14,9 @@ inoremap kj <Esc>
 
 " Color scheme
 if has('gui_running')
-    colorscheme twilight
+    colorscheme zenburn-hesselbom
 else
-    colorscheme zenburn
+    colorscheme zenburn-hesselbom
 endif
 
 " Various
