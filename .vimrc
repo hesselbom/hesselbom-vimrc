@@ -19,6 +19,15 @@ else
     colorscheme zenburn-hesselbom
 endif
 
+" Font
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=Inconsolata\ 8
+  elseif has("gui_win32")
+    set guifont=Consolas:h11:cANSI
+  endif
+endif
+
 " Various
 syntax on
 set number
