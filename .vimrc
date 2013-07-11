@@ -125,6 +125,7 @@ let Grep_Default_Options = '-rs'
 " Buffers
 nnoremap <C-H> :bp<cr>
 nnoremap <C-L> :bn<cr>
+nnoremap <C-B> :buffers<cr>
 
 " CtrlP
 nnoremap π :CtrlPBuffer<cr>
