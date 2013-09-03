@@ -57,6 +57,7 @@ set wildignore+=.DS_Store
 set wildignore+=.sass-cache
 set wildignore+=node_modules
 set wildignore+=mage--*
+set wildignore+=build
 
 " Encoding
 set enc=utf-8
