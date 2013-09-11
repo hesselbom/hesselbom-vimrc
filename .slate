@@ -25,6 +25,8 @@ bind l:cmd        focus right
 bind h:cmd        focus left
 bind k:cmd        focus up
 bind j:cmd        focus down
+bind l:ctrl;cmd   focus behind
+bind h:ctrl;cmd   focus behind
 bind k:ctrl;cmd   focus behind
 bind j:ctrl;cmd   focus behind
 
