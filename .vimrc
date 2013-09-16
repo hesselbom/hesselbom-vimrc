@@ -76,6 +76,7 @@ vnoremap <C-k> 5k
 
 " CTags
 nnoremap tag :TlistToggle<CR>
+let Tlist_Exit_OnlyWindow=1
 
 " Scroll
 set scrolloff=7
