@@ -74,6 +74,9 @@ nnoremap <C-k> 5k
 vnoremap <C-j> 5j
 vnoremap <C-k> 5k
 
+" CTags
+nnoremap tag :TlistToggle<CR>
+
 " Scroll
 set scrolloff=7
 set scroll=15
