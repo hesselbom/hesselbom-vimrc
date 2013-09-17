@@ -144,3 +144,7 @@ nnoremap <C-B> :buffers<cr>
 
 " CtrlP
 nnoremap π :CtrlPBuffer<cr>
+
+" ProjectRoot
+nnoremap <Leader>g :ProjectRootExe Grep<space>
+nnoremap <Leader>b :ProjectRootExe !grunt build<CR>
