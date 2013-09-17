@@ -56,6 +56,7 @@ set switchbuf=split      " Always open quickfix results in new split
 set wildignore=*.swp,*.bak,*.pyc,*.class
 set wildignore+=.DS_Store
 set wildignore+=.sass-cache
+set wildignore+=.modgit
 set wildignore+=node_modules
 set wildignore+=mage--*
 set wildignore+=build
