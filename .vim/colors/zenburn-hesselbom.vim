@@ -244,6 +244,7 @@ hi VertSplit       guifg=#2e3330 guibg=#2e3330
 hi VisualNOS       guifg=#333333 guibg=#f18c96 gui=bold,underline
 hi WarningMsg      guifg=#ffffff guibg=#333333 gui=bold
 hi WildMenu        guibg=#2c302d guifg=#cbecd0 gui=underline
+hi MyTagListFileName  guibg=#333333 gui=underline
 
 hi SpellBad   guisp=#bc6c4c guifg=#dc8c6c
 hi SpellCap   guisp=#6c6c9c guifg=#8c8cbc
