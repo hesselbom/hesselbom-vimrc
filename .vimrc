@@ -50,7 +50,6 @@ set noswapfile
 set pastetoggle=<F2>
 set guioptions=          " Remove gui elements
 set laststatus=2         " Always show status bar
-set switchbuf=split      " Always open quickfix results in new split
 
 " Ignore
 set wildignore=*.swp,*.bak,*.pyc,*.class
