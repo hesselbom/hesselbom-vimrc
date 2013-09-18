@@ -148,4 +148,4 @@ nnoremap π :CtrlPBuffer<cr>
 
 " ProjectRoot
 nnoremap <Leader>g :ProjectRootExe Grep<space>
-nnoremap <Leader>b :ProjectRootExe !grunt build<CR>
+nnoremap <Leader>b :ProjectRootExe Grunt build<CR>
