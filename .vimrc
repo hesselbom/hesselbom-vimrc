@@ -148,4 +148,6 @@ nnoremap π :CtrlPBuffer<cr>
 
 " ProjectRoot
 nnoremap <Leader>g :ProjectRootExe Grep<space>
+nnoremap <Leader>gr :ProjectRootExe Grep<space>
+nnoremap <Leader>gs :Git status<CR>
 nnoremap <Leader>b :ProjectRootExe Grunt build<CR>
