@@ -146,7 +146,8 @@ nnoremap <C-B> :buffers<cr>
 nnoremap π :CtrlPBuffer<cr>
 
 " ProjectRoot
-nnoremap <Leader>g :ProjectRootExe Grep<space>
-nnoremap <Leader>gr :ProjectRootExe Grep<space>
+autocmd BufEnter * ProjectRootCD
+nnoremap <Leader>g :Grep<space>
+nnoremap <Leader>gr :Grep<space>
 nnoremap <Leader>gs :Git status<CR>
-nnoremap <Leader>b :ProjectRootExe Grunt build<CR>
+nnoremap <Leader>b :Grunt build<CR>
