@@ -145,6 +145,10 @@ nnoremap <C-B> :buffers<cr>
 " CtrlP
 nnoremap π :CtrlPBuffer<cr>
 
+" NERDTree
+autocmd BufLeave * NERDTreeClose
+nnoremap <leader>n * :NERDTreeToggle<CR>
+
 " ProjectRoot
 autocmd BufEnter * ProjectRootCD
 nnoremap <Leader>g :Grep<space>
