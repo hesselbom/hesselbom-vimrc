@@ -155,3 +155,6 @@ nnoremap <Leader>g :Grep<space>
 nnoremap <Leader>gr :Grep<space>
 nnoremap <Leader>gs :Git status<CR>
 nnoremap <Leader>b :Grunt build<CR>
+
+" Find trailing spaces
+nnoremap <Leader>trai /\s\+$<CR>
