@@ -147,7 +147,7 @@ nnoremap π :CtrlPBuffer<cr>
 
 " NERDTree
 autocmd BufLeave * NERDTreeClose
-nnoremap <leader>n * :NERDTreeToggle<CR>
+nnoremap <leader>n * :NERDTreeFind<CR>
 
 " ProjectRoot
 autocmd BufEnter * ProjectRootCD
