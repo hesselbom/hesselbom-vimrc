@@ -160,4 +160,4 @@ nnoremap <Leader>b :Grunt build<CR>
 nnoremap <Leader>trai /\s\+$<CR>
 
 " Show search matches
-nnoremap <Leader>s :g/<CR>
+nnoremap <Leader>s :%s///gn \| :g/<CR>
