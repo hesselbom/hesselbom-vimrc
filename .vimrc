@@ -158,3 +158,6 @@ nnoremap <Leader>b :Grunt build<CR>
 
 " Find trailing spaces
 nnoremap <Leader>trai /\s\+$<CR>
+
+" Show search matches
+nnoremap <Leader>s :g/<CR>
