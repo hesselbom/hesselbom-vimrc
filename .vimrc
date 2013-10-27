@@ -59,6 +59,8 @@ set wildignore+=.modgit
 set wildignore+=node_modules
 set wildignore+=mage--*
 set wildignore+=build
+set wildignore+=dev
+set wildignore+=dist
 
 " Encoding
 set enc=utf-8
