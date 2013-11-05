@@ -14,6 +14,9 @@ setlocal comments=:#
 setlocal commentstring=#\ %s
 setlocal omnifunc=javascriptcomplete#CompleteJS
 
+set shiftwidth=2  " number of spaces to use for autoindenting
+set tabstop=2     " a tab is four spaces
+
 " Enable CoffeeMake if it won't overwrite any settings.
 if !len(&l:makeprg)
   compiler coffee
