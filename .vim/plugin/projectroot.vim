@@ -13,36 +13,55 @@ if !exists('g:rootmarkers')
   let g:rootmarkers = ['.projectroot', '.git', '.hg', '.svn', '.bzr', '_darcs', 'build.xml']
 endif
 
-" ProjectRootGuess([file]): guesses and returns the project root {{{1
-fun! ProjectRootGuess(...)
+" ProjectRootGet([file]): get the project root (if any) {{{1
+fun! ProjectRootGet(...)
   let fullfile = s:getfullname(a:0 ? a:1 : '')
+  if fullfile =~ '^fugitive:/'
+    return '' " skip any fugitive buffers early
+  endif
   if exists('b:projectroot')
     if stridx(fullfile, fnamemodify(b:projectroot, ':p'))==0
       return b:projectroot
     endif
   endif
   for marker in g:rootmarkers
-    let result=''
     let pivot=fullfile
-    while pivot!=fnamemodify(pivot, ':h')
+    while 1
+      let prev=pivot
       let pivot=fnamemodify(pivot, ':h')
-      if len(glob(pivot.'/'.marker))
-        let result=pivot
+      if filereadable(pivot.'/'.marker) || isdirectory(pivot.'/'.marker)
+        return pivot
+      endif
+      if pivot==prev
+        break
       endif
     endwhile
-    if len(result)
-      return result
-    endif
   endfor
-  return filereadable(fullfile) ? fnamemodify(fullfile, ':h') : fullfile
+  return ''
+endf
+
+" ProjectRootGuess([file]): guesses and returns the project root {{{1
+fun! ProjectRootGuess(...)
+  let projroot = ProjectRootGet(a:0 ? a:1 : '')
+  if len(projroot)
+    return projroot
+  endif
+  " Not found: return parent directory of current file / file itself.
+  let fullfile = s:getfullname(a:0 ? a:1 : '')
+  return !isdirectory(fullfile) ? fnamemodify(fullfile, ':h') : fullfile
 endf
 
 " ProjectRootCD([file]): changes directory to the project of the given file {{{1
+" Args: 0: (optional) filename
+"       1: (optional) command (Default: "cd")
 fun! ProjectRootCD(...)
-  exe 'cd "' ProjectRootGuess(s:getfullname(a:0 ? a:1 : '')) '"'
+  let root = ProjectRootGuess(get(a:000, 0, ''))
+  let cdcmd = get(a:000, 1, 'cd')
+  exe cdcmd fnameescape(root)
 endf
 
-command! -nargs=? -complete=file ProjectRootCD :call ProjectRootCD("<args>")
+command! -nargs=? -complete=file ProjectRootCD  :call ProjectRootCD("<args>", "cd")
+command! -nargs=? -complete=file ProjectRootLCD :call ProjectRootCD("<args>", "lcd")
 
 " ProjectRootExe(cmd): executes cmd from within the project directory {{{1
 fun! ProjectRootExe(args)
@@ -51,7 +70,7 @@ fun! ProjectRootExe(args)
     ProjectRootCD
     exe join(a:args)
   finally
-    exe 'cd' olddir
+    exe 'cd' fnameescape(olddir)
   endtry
 endfun
 
