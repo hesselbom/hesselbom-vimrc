@@ -50,6 +50,7 @@ set noswapfile
 set pastetoggle=<F2>
 set guioptions=          " Remove gui elements
 set laststatus=2         " Always show status bar
+set lisp " Autocomplete dashes
 
 " Ignore
 set wildignore=*.swp,*.bak,*.pyc,*.class
