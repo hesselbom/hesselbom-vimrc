@@ -8,10 +8,6 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
-" Map jk and kj to <Esc>
-inoremap jk <Esc>
-inoremap kj <Esc>
-
 " Color scheme
 if has('gui_running')
     colorscheme zenburn-hesselbom
