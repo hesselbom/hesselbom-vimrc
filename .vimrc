@@ -124,6 +124,8 @@ autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/plugin/closetag.vim
 autocmd FileType php,phtml set omnifunc=phpcomplete#CompletePHP
 
+au FileType jade setl sw=2 sts=2 et
+
 au BufRead,BufNewFile todo.txt,*.todo.txt,recur.txt,*.todo set filetype=todo
 
 autocmd BufLeave * ccl
