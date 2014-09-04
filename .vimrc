@@ -8,10 +8,6 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
-" Map jk and kj to <Esc>
-inoremap jk <Esc>
-inoremap kj <Esc>
-
 " Color scheme
 if has('gui_running')
     colorscheme zenburn-hesselbom
@@ -127,6 +123,8 @@ set cursorline cursorcolumn
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/plugin/closetag.vim
 autocmd FileType php,phtml set omnifunc=phpcomplete#CompletePHP
+
+au FileType jade setl sw=2 sts=2 et
 
 au BufRead,BufNewFile todo.txt,*.todo.txt,recur.txt,*.todo set filetype=todo
 
