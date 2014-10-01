@@ -10,45 +10,45 @@
 "
 "============================================================================
 
-" if exists("g:loaded_syntastic_sass_sass_checker")
-"     finish
-" endif
-" let g:loaded_syntastic_sass_sass_checker=1
-" 
-" function! SyntaxCheckers_sass_sass_IsAvailable()
-"     return executable("sass")
-" endfunction
-" 
-" "sass caching for large files drastically speeds up the checking, but store it
-" "in a temp location otherwise sass puts .sass_cache dirs in the users project
-" let s:sass_cache_location = tempname()
-" 
-" "By default do not check partials as unknown variables are a syntax error
-" if !exists("g:syntastic_sass_check_partials")
-"     let g:syntastic_sass_check_partials = 0
-" endif
-" 
-" "use compass imports if available
-" let s:imports = ""
-" if executable("compass")
-"     let s:imports = "--compass"
-" endif
-" 
-" function! SyntaxCheckers_sass_sass_GetLocList()
-"     if !g:syntastic_sass_check_partials && expand('%:t')[0] == '_'
-"         return []
-"     end
-"     let makeprg = syntastic#makeprg#build({
-"                 \ 'exe': 'sass',
-"                 \ 'args': '--cache-location ' . s:sass_cache_location . ' ' . s:imports . ' --check',
-"                 \ 'subchecker': 'sass' })
-"     let errorformat = '%ESyntax %trror:%m,%C        on line %l of %f,%Z%.%#'
-"     let errorformat .= ',%Wwarning on line %l:,%Z%m,Syntax %trror on line %l: %m'
-"     let loclist = SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
-" 
-"     return loclist
-" endfunction
-" 
-" call g:SyntasticRegistry.CreateAndRegisterChecker({
-"     \ 'filetype': 'sass',
-"     \ 'name': 'sass'})
+if exists("g:loaded_syntastic_sass_sass_checker")
+    finish
+endif
+let g:loaded_syntastic_sass_sass_checker=1
+
+function! SyntaxCheckers_sass_sass_IsAvailable()
+    return executable("sass")
+endfunction
+
+"sass caching for large files drastically speeds up the checking, but store it
+"in a temp location otherwise sass puts .sass_cache dirs in the users project
+let s:sass_cache_location = tempname()
+
+"By default do not check partials as unknown variables are a syntax error
+if !exists("g:syntastic_sass_check_partials")
+    let g:syntastic_sass_check_partials = 0
+endif
+
+"use compass imports if available
+let s:imports = ""
+if executable("compass")
+    let s:imports = "--compass"
+endif
+
+function! SyntaxCheckers_sass_sass_GetLocList()
+    if !g:syntastic_sass_check_partials && expand('%:t')[0] == '_'
+        return []
+    end
+    let makeprg = syntastic#makeprg#build({
+                \ 'exe': 'sass',
+                \ 'args': '--cache-location ' . s:sass_cache_location . ' ' . s:imports . ' --check',
+                \ 'subchecker': 'sass' })
+    let errorformat = '%ESyntax %trror:%m,%C        on line %l of %f,%Z%.%#'
+    let errorformat .= ',%Wwarning on line %l:,%Z%m,Syntax %trror on line %l: %m'
+    let loclist = SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+
+    return loclist
+endfunction
+
+call g:SyntasticRegistry.CreateAndRegisterChecker({
+    \ 'filetype': 'sass',
+    \ 'name': 'sass'})
