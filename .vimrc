@@ -130,6 +130,10 @@ au BufRead,BufNewFile todo.txt,*.todo.txt,recur.txt,*.todo set filetype=todo
 
 autocmd BufLeave * ccl
 
+" Save view and folds
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+
 " Global variables
 let mapleader = ","
 let g:ctrlp_show_hidden = 1
