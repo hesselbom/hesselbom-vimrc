@@ -6,3 +6,4 @@ Makefile
 *.log
 *.bundle
 .netrwhist
+.vim/view
