@@ -127,6 +127,7 @@ autocmd FileType php,phtml set omnifunc=phpcomplete#CompletePHP
 au FileType jade setl sw=2 sts=2 et
 
 au BufRead,BufNewFile todo.txt,*.todo.txt,recur.txt,*.todo set filetype=todo
+au BufRead,BufNewFile *.cshtml set filetype=html
 
 autocmd BufLeave * ccl
 
