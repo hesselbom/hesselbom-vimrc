@@ -131,6 +131,10 @@ au BufRead,BufNewFile *.cshtml set filetype=html
 
 autocmd BufLeave * ccl
 
+" Save view and folds
+autocmd BufWinLeave *.* mkview
+autocmd BufWinEnter *.* silent loadview
+
 " Global variables
 let mapleader = ","
 let g:ctrlp_show_hidden = 1
