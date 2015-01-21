@@ -152,7 +152,9 @@ nnoremap π :CtrlPBuffer<cr>
 
 " NERDTree
 autocmd BufLeave * NERDTreeClose
-nnoremap <leader>n * :NERDTreeFind<CR>
+nnoremap <leader>n :NERDTreeFind<CR>
+let g:NERDTreeMapJumpNextSibling = '<A-j>'
+let g:NERDTreeMapJumpPrevSibling = '<A-k>'
 
 " ProjectRoot
 autocmd BufEnter * ProjectRootCD
