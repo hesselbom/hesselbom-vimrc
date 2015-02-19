@@ -50,6 +50,8 @@
 	<false/>
 	<key>HideActivityIndicator</key>
 	<false/>
+	<key>HideMenuBarInFullscreen</key>
+	<true/>
 	<key>HideScrollbar</key>
 	<false/>
 	<key>HideTab</key>
@@ -80,8 +82,6 @@
 	<true/>
 	<key>MaxVertically</key>
 	<false/>
-	<key>NSColorPanelMode</key>
-	<string>65535</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>~/hesselbom-vimrc/iterm-profiles</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -90,10 +90,34 @@
 	<string></string>
 	<key>NSScrollAnimationEnabled</key>
 	<false/>
+	<key>NSTableView Columns KeyBingingTable</key>
+	<array>
+		<data>
+		BAtzdHJlYW10eXBlZIHoA4QBQISEhAhOU1N0cmluZwGEhAhOU09iamVjdACF
+		hAErATCG
+		</data>
+		<string>198</string>
+		<data>
+		BAtzdHJlYW10eXBlZIHoA4QBQISEhAhOU1N0cmluZwGEhAhOU09iamVjdACF
+		hAErATGG
+		</data>
+		<string>302</string>
+	</array>
+	<key>NSTableView Hidden Columns KeyBingingTable</key>
+	<array/>
+	<key>NSTableView Sort Ordering KeyBingingTable</key>
+	<array/>
+	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
+	<dict>
+		<key>TB Is Shown</key>
+		<integer>1</integer>
+	</dict>
 	<key>NSWindow Frame Preferences</key>
-	<string>621 408 924 485 0 0 2560 1418 </string>
+	<string>805 476 924 485 0 0 2560 1417 </string>
+	<key>NSWindow Frame SUStatusFrame</key>
+	<string>1356 979 384 129 0 0 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 10 1263 1408 0 0 2560 1418 </string>
+	<string>1786 12 745 745 0 0 2560 1417 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -106,11 +130,11 @@
 			<key>Ansi 0 Color</key>
 			<dict>
 				<key>Blue Component</key>
-				<real>0.1887042224407196</real>
+				<real>0.0</real>
 				<key>Green Component</key>
-				<real>0.18870101869106293</real>
+				<real>0.0</real>
 				<key>Red Component</key>
-				<real>0.1887066662311554</real>
+				<real>0.0</real>
 			</dict>
 			<key>Ansi 1 Color</key>
 			<dict>
@@ -232,11 +256,11 @@
 			<key>Ansi 8 Color</key>
 			<dict>
 				<key>Blue Component</key>
-				<real>0.1887042224407196</real>
+				<real>0.0</real>
 				<key>Green Component</key>
-				<real>0.18870101869106293</real>
+				<real>0.0</real>
 				<key>Red Component</key>
-				<real>0.1887066662311554</real>
+				<real>0.0</real>
 			</dict>
 			<key>Ansi 9 Color</key>
 			<dict>
@@ -254,11 +278,11 @@
 			<key>Background Color</key>
 			<dict>
 				<key>Blue Component</key>
-				<real>0.1887042224407196</real>
+				<real>0.17986719310283661</real>
 				<key>Green Component</key>
-				<real>0.18870101869106293</real>
-				<key>Red Component</key>
 				<real>0.1887066662311554</real>
+				<key>Red Component</key>
+				<real>0.18595851957798004</real>
 			</dict>
 			<key>Background Image Is Tiled</key>
 			<false/>
@@ -829,6 +853,8 @@
 			<string>/Users/hesselbom</string>
 		</dict>
 	</array>
+	<key>NoSyncNeverRemindPrefsChangesLost</key>
+	<true/>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -893,7 +919,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2013-11-12T08:36:30Z</date>
+	<date>2015-02-19T02:25:45Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -935,6 +961,6 @@
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>iTerm Version</key>
-	<string>1.0.0.20131109</string>
+	<string>2.0.0.20141103</string>
 </dict>
 </plist>
