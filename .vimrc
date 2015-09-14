@@ -50,6 +50,7 @@ set lisp " Autocomplete dashes
 
 " Ignore
 set wildignore=*.swp,*.bak,*.pyc,*.class
+set wildignore+=*.min.js
 set wildignore+=.DS_Store
 set wildignore+=.sass-cache
 set wildignore+=.modgit
@@ -160,8 +161,8 @@ let g:NERDTreeMapJumpPrevSibling = '<A-k>'
 autocmd BufEnter * ProjectRootCD
 nnoremap <Leader>g :Grep<space>
 nnoremap <Leader>gr :Grep<space>
+nnoremap <Leader>gu :Grep -rsl<space>
 nnoremap <Leader>gs :Git status<CR>
-nnoremap <Leader>b :Grunt build<CR>
 
 " Find trailing spaces
 nnoremap <Leader>trai /\s\+$<CR>
