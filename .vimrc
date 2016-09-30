@@ -95,8 +95,8 @@ set listchars=tab:>-,trail:·,extends:>,precedes:<,nbsp:&
 
 " Tabs
 set expandtab
-set shiftwidth=4  " number of spaces to use for autoindenting
-set tabstop=4     " a tab is four spaces
+set shiftwidth=2  " number of spaces to use for autoindenting
+set tabstop=2     " a tab is two spaces
 set shiftround    " use multiple of shiftwidth when indenting with '<' and '>'
 set smarttab      " insert tabs on the start of a line according to shiftwidth, not tabstop
 
