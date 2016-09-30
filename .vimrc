@@ -59,6 +59,7 @@ set wildignore+=node_modules
 set wildignore+=mage--*
 set wildignore+=build
 set wildignore+=dist
+set wildignore+=Export
 
 " Encoding
 set enc=utf-8
