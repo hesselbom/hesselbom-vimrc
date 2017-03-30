@@ -113,11 +113,19 @@ noremap Ωﬁ :maca _cycleWindows:<CR>
 " Alt hl to cycle tabs
 noremap ˘ :tabprev<CR>
 noremap ﬂ :tabnext<CR>
+" Ubuntu
+noremap È :tabprev<CR>
+noremap Ì :tabnext<CR>
 " Alt keys to toggle window
 nnoremap ª :wincmd k<CR>
 nnoremap √ :wincmd j<CR>
 nnoremap ˛ :wincmd h<CR>
 nnoremap ﬁ :wincmd l<CR>
+" Alt keys ubuntu
+nnoremap ë :wincmd k<CR>
+nnoremap ê :wincmd j<CR>
+nnoremap è :wincmd h<CR>
+nnoremap ì :wincmd l<CR>
 
 " Cursor position
 set cursorline cursorcolumn
