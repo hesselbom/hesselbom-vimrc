@@ -139,6 +139,7 @@ au FileType jade setl sw=2 sts=2 et
 au FileType sass setl sw=2 sts=2 shiftwidth=2 et
 
 au BufRead,BufNewFile todo.txt,*.todo.txt,recur.txt,*.todo set filetype=todo
+au BufRead,BufNewFile *.styl set syntax=stylus
 
 autocmd BufLeave * ccl
 
