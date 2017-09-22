@@ -141,6 +141,7 @@ au FileType sass setl sw=2 sts=2 shiftwidth=2 et
 au BufRead,BufNewFile todo.txt,*.todo.txt,recur.txt,*.todo set filetype=todo
 au BufRead,BufNewFile *.styl set syntax=stylus
 au BufRead,BufNewFile *.ejs set syntax=ejs
+au BufRead,BufNewFile *.hbs set syntax=mustache
 
 autocmd BufLeave * ccl
 
