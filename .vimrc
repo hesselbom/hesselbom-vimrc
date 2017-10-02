@@ -183,3 +183,5 @@ nnoremap <Leader>trai /\s\+$<CR>
 
 " Show search matches
 nnoremap <Leader>s :%s///gn \| :g/<CR>
+
+let g:rootmarkers = ['.projectroot', '.git', '.hg', '.svn', '.bzr', '_darcs', 'build.xml', '.p4ignore']
