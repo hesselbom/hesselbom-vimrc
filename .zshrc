@@ -63,3 +63,13 @@ DISABLE_AUTO_UPDATE=true
 export PATH="/usr/local/sbin:$PATH"
 PHP_AUTOCONF="/usr/local/bin/autoconf"
 source ~/.bash_aliases
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/hesselbom/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/hesselbom/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/hesselbom/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/hesselbom/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+PHP_AUTOCONF="/usr/local/bin/autoconf"
+source ~/.bash_aliases
