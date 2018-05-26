@@ -139,6 +139,9 @@ au FileType jade setl sw=2 sts=2 et
 au FileType sass setl sw=2 sts=2 shiftwidth=2 et
 
 au BufRead,BufNewFile todo.txt,*.todo.txt,recur.txt,*.todo set filetype=todo
+au BufRead,BufNewFile *.styl set syntax=stylus
+au BufRead,BufNewFile *.ejs set syntax=ejs
+au BufRead,BufNewFile *.hbs set syntax=mustache
 
 autocmd BufLeave * ccl
 
@@ -180,3 +183,5 @@ nnoremap <Leader>trai /\s\+$<CR>
 
 " Show search matches
 nnoremap <Leader>s :%s///gn \| :g/<CR>
+
+let g:rootmarkers = ['.projectroot', '.git', '.hg', '.svn', '.bzr', '_darcs', 'build.xml', '.p4ignore']
