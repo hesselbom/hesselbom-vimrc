@@ -63,3 +63,23 @@ DISABLE_AUTO_UPDATE=true
 export PATH="/usr/local/sbin:$PATH"
 PHP_AUTOCONF="/usr/local/bin/autoconf"
 source ~/.bash_aliases
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+PATH="/Applications/Postgres.app/Contents/Versions/latest/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/hesselbom/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/hesselbom/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/hesselbom/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then source '/Users/hesselbom/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+###-tns-completion-start-###
+if [ -f /Users/hesselbom/.tnsrc ]; then 
+    source /Users/hesselbom/.tnsrc 
+fi
+###-tns-completion-end-###
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
