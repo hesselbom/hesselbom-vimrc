@@ -2,3 +2,4 @@
 rm -rf .vim
 rm .vimrc
 rm .gvimrc
+rm .tmux.conf
