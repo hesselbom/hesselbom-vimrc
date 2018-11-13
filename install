@@ -2,3 +2,4 @@
 ln -s hesselbom-vimrc/.vim .vim
 ln -s hesselbom-vimrc/.vimrc .vimrc
 ln -s hesselbom-vimrc/.gvimrc .gvimrc
+ln -s hesselbom-vimrc/.tmux.conf .tmux.conf

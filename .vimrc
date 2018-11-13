@@ -164,6 +164,7 @@ nnoremap <C-B> :buffers<cr>
 
 " CtrlP
 nnoremap π :CtrlPBuffer<cr>
+nnoremap <C-5> :CtrlPClearAllCaches<cr>
 
 " NERDTree
 autocmd BufLeave * NERDTreeClose
