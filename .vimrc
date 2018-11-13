@@ -178,6 +178,9 @@ nnoremap <Leader>gr :Grep<space>
 nnoremap <Leader>gu :Grep -rsl<space>
 nnoremap <Leader>gs :Git status<CR>
 
+" Quickfix
+nnoremap <Leader>q :botright cwindow<CR>
+
 " Find trailing spaces
 nnoremap <Leader>trai /\s\+$<CR>
 
