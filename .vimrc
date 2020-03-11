@@ -59,8 +59,10 @@ set wildignore+=.tmp-es6
 set wildignore+=node_modules
 set wildignore+=mage--*
 set wildignore+=build
+set wildignore+=web-build
 set wildignore+=dist
 set wildignore+=Export
+set wildignore+=tags
 
 " Encoding
 set enc=utf-8
