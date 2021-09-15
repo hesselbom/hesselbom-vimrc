@@ -55,6 +55,7 @@ set wildignore+=.DS_Store
 set wildignore+=.sass-cache
 set wildignore+=.modgit
 set wildignore+=.tmp
+set wildignore+=.next
 set wildignore+=.tmp-es6
 set wildignore+=node_modules
 set wildignore+=mage--*

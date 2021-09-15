@@ -56,8 +56,8 @@ if [ -f ~/.bashrc ]; then
     source ~/.bashrc
 fi
 
-export NVM_DIR="~/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 DISABLE_AUTO_UPDATE=true
 export PATH="/usr/local/sbin:$PATH"
@@ -90,3 +90,5 @@ if [ -f '/Users/hesselbom/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/hesse
 if [ -f '/Users/hesselbom/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/hesselbom/google-cloud-sdk/completion.zsh.inc'; fi
 
 export PATH="$PATH:/Users/hesselbom/Documents/tweego"
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
