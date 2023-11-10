@@ -83,12 +83,13 @@ export PATH="$PATH:/Users/hesselbom/Documents/sdks/flutter/bin"
 PHP_AUTOCONF="/usr/local/bin/autoconf"
 source ~/.bash_aliases
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/hesselbom/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/hesselbom/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/hesselbom/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/hesselbom/google-cloud-sdk/completion.zsh.inc'; fi
-
 export PATH="$PATH:/Users/hesselbom/Documents/tweego"
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
+PATH=$(pyenv root)/shims:$PATH
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/hesselbom/Documents/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/hesselbom/Documents/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/hesselbom/Documents/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/hesselbom/Documents/google-cloud-sdk/completion.zsh.inc'; fi
