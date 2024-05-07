@@ -1,708 +1,179 @@
-" Vim filetype plugin for heirarchical TODO lists
-" Maintainer:   Mark Harrison <mark@mivok.net>
-" Last Change:  Nov 27, 2010
-" License:      ISC - See LICENSE file for details
+" File:        todo.txt.vim
+" Description: Todo.txt filetype detection
+" Author:      David Beniamine <David@Beniamine.net>, Leandro Freitas <freitass@gmail.com>
+" License:     Vim license
+" Website:     http://github.com/dbeniamine/todo.txt-vim
 
-" This file has folded functions - Use zR to show all source code if you
-" aren't familiar with folding in vim.
-
-" Only load if we haven't already {{{1
-if exists("b:did_ftplugin")
-    finish
+if ! exists("g:Todo_txt_loaded")
+    let g:Todo_txt_loaded=0.8.2
 endif
-let b:did_ftplugin = 1
-"1}}}
-" Make sure we aren't running in compatible mode {{{1
+
+" Save context {{{1
 let s:save_cpo = &cpo
 set cpo&vim
-"1}}}
 
-" Utility Functions
-" s:Map - mapping helper function {{{1
-function! s:Map(keys, funcname)
-    if !hasmapto('<Plug>Todo'.a:funcname)
-        exe "map <buffer> <silent> <unique> <LocalLeader>".a:keys.
-                    \" <Plug>Todo".a:funcname
-    endif
-    exe "noremap <buffer> <silent> <unique> <script> <Plug>Todo".a:funcname.
-                \" <SID>".a:funcname
-    exe "noremap <buffer> <silent> <SID>".a:funcname." :call <SID>".
-                \a:funcname."()<CR>"
-endfunction
-"1}}}
-" s:NewScratchBuffer - Create a new buffer {{{1
-function! s:NewScratchBuffer(name, split)
-    if a:split
-        split
-    endif
-    " Set the buffer name
-    let name="[".a:name."]"
-    if !has("win32")
-        let name = escape(name, "[]")
-    endif
-    " Switch buffers
-    if has("gui")
-        exec "silent keepjumps drop" name
-    else
-        exec "silent keepjumps hide edit" name
-    endif
-    " Set the new buffer properties to be a scrach buffer
-    setlocal bufhidden=delete
-    setlocal buftype=nofile
-    setlocal modifiable " This needs to be changed once the buffer has stuff in
-    setlocal noswapfile
-    setlocal nowrap     " This can be changed if needed
-endfunction
-"1}}}
-" s:GetState - Gets the state for a line, and its index {{{1
-function! s:GetState(line)
-    let line=getline(a:line)
-    let regex="\\(^\\s*\\)\\@<=[A-Z]\\+\\(\\s\\|$\\)\\@="
-    let idx=match(line, regex)
-    let state=matchstr(line, regex)
-    return [state, idx]
-endfunction
-"1}}}
-" s:IsDoneState - Tests if a state is considered 'done' {{{1
-function! s:IsDoneState(state)
-    for group in g:todo_states
-        let idx = index(group, "|")
-        if idx == len(group)
-            continue
-        elseif idx != -1
-            let idx = idx + 1
-        endif
-        " Note, having idx set to -1 (when there is no |) means we will be
-        " looking at the last item, which is the desired behavior.
-        for teststate in group[idx+0:]
-            if vimtodo#TodoParseTaskState(teststate)["state"] == a:state
-                return 1
-            endif
-        endfor
-    endfor
-    return 0
-endfunction
-"1}}}
-" s:GetDoneStates - Returns a list of all done states {{{1
-function! s:GetDoneStates()
-    let states = []
-    for group in g:todo_states
-        let idx = index(group, "|")
-        if idx == len(group)
-            continue
-        elseif idx != -1
-            let idx = idx + 1
-        endif
-        for state in group[idx :]
-            call add(states, vimtodo#TodoParseTaskState(state)['state'])
-        endfor
-    endfor
-    return states
-endfunction
-"1}}}
-" s:ParseDate {{{1
-" Parses A string of the form YYYY-MM-DD into an integer for comparison
-" purposes. Supports YYYY-M-D formats too
-function! s:ParseDate(datestr)
-    let ml = matchlist(a:datestr,
-                \'\(\d\{4\}\)-\(\d\{1,2\}\)-\(\d\{1,2\}\)')
-    if ml == []
-        return 0
-    endif
-    let [y, m, d] = ml[1:3]
-    return str2nr(printf("%d%02d%02d", y,m,d))
-endfunction
-" 1}}}
-" s:GetCurrentTask {{{1
-" Gets the line numbers for the start and end of the current task given a line
-" number (the 'current' line).  A task for the purposes of this function
-" starts at the beginning of the line and stops when the indent goes back to 0
-function! s:GetCurrentTask(line)
-    let startline = a:line
-    let endline = a:line
-    let bottom = line("$")
+" General options {{{1
+" Some options lose their values when window changes. They will be set every
+" time this script is invoked, which is whenever a file of this type is
+" created or edited.
+setlocal textwidth=0
+setlocal wrapmargin=0
 
-    while startline > 1 && indent(startline) > 0
-        let startline -= 1
-    endwhile
-    while endline < bottom && indent(endline + 1) > 0
-        let endline += 1
-    endwhile
-    return [startline, endline]
-endfunction
-" 1}}}
+" Increment and decrement the priority use <C-A> and <C-X> on alpha
+setlocal nrformats+=alpha
 
-" Drawer Functions
-" s:FindDrawer {{{1
-function! s:FindDrawer(name, line)
-    let line=a:line
-    " Strings will evaluate to 0 - so process it with the line function if we
-    " have a string.
-    if line == 0
-        let line = line(line)
-    endif
-    if line == -1
-        " -1 means look for a top-level drawer
-        let topindent = -1
-        let indent = 0
-        let line += 1
-    else
-        " Look for a drawer inside the current entry
-        let topindent = indent(line)
-        let line=line + 1
-        let indent = indent(line)
-    endif
-    while indent(line) > topindent
-        if indent(line) == indent &&
-                    \ match(getline(line), '^\s*:'.toupper(a:name).':') != -1
-            return line
-        endif
-        let line = line + 1
-    endwhile
-    return -1
-endfunction
-"1}}}
-" s:FindOrMakeDrawer {{{1
-function! s:FindOrMakeDrawer(name, line)
-    let line = s:FindDrawer(a:name, a:line)
-    if line != -1
-        return line
-    endif
-    let topindent = indent(a:line)
-    let indent = indent(a:line + 1)
-    if indent <= topindent
-        let indent = topindent + &shiftwidth
-    endif
-    let indentstr=printf("%".indent."s", "") " generate indent spaces
-    call append(a:line, indentstr.":".toupper(a:name).":")
-    return a:line + 1
-endfunction
-"1}}}
-" s:GetNextProperty {{{1
-function! s:GetNextProperty(drawerline, propertyline)
-    let indent = indent(a:drawerline)
-    let propindent = indent(a:propertyline)
-    if propindent <= indent
-        " We exited the drawer, return nothing
-        return ["",""]
-    endif
-    let match = matchlist(getline(a:propertyline),
-                \'^\s\++\([A-Z]\+\):\s\?\(.*\)$')
-    if match != []
-        return match[1:2]
-    else
-        return ["",""]
-    endif
-endfunction
-" 1}}}
-" s:GetProperty {{{1
-function! s:GetProperty(drawerline, property)
-    let indent = indent(a:drawerline)
-    let linenum = a:drawerline + 1
-    while indent(linenum) >= indent
-        let match = matchlist(getline(linenum),
-                    \'^\s\++'.a:property.':\s\?\(.*\)$')
-        if match != []
-            return [match[1], linenum]
-        endif
-        let linenum += 1
-    endwhile
-    return ["", -1]
-endfunction
-" 1}}}
-" s:SetProperty {{{1
-function! s:SetProperty(drawerline, property, value)
-    let match = s:GetProperty(a:drawerline, a:property)
-    if match[1] != -1
-        " Property already exists, edit it
-        exe match[1] . "s/:.*/: " . a:value . "/"
-    else
-        " Property doesn't exist, add it from scratch
-        let topindent = indent(a:drawerline)
-        let indent = indent(a:drawerline + 1)
-        if indent <= topindent
-            let indent = topindent + &shiftwidth
-        endif
-        let indentstr=printf("%".indent."s", "") " generate indent spaces
-        call append(a:drawerline, indentstr."+".toupper(a:property).": " .
-            \ a:value)
-    endif
-endfunction
-" 1}}}
-
-" Settings
-" Load default variables {{{1
-call vimtodo#SetDefaultVars()
-"1}}}
-" Per file variables {{{1
-let s:PropertyVars = {
-            \'LOGDONE':         'g:todo_log_done',
-            \'LOGDRAWER':       'g:todo_log_into_drawer',
-            \'DONEFILE':        'g:todo_done_file',
-            \'STATES':          'g:todo_states',
-            \'STATECOLORS':     'g:todo_state_colors',
-            \'CHECKBOXSTATES':  'g:todo_checkbox_states',
-            \'TASKURL':         'g:todo_taskurl',
-            \'BROWSER':         'g:todo_browser'
-            \}
-let s:PropertyTypes = {
-            \'STATES':          'nestedlist',
-            \'STATECOLORS':     'dict',
-            \'CHECKBOXSTATES':  'nestedlist'
-            \}
-function! s:LoadFileVars()
-    let drawerline=s:FindDrawer("SETTINGS", 0)
-    if drawerline == -1
-        return
-    endif
-    let propertyline=drawerline + 1
-    let [name, val] = s:GetNextProperty(drawerline, propertyline)
-    " Keep track of which variables have already been wiped - list/dict vars
-    " need the original value overwriting for the first settings line, but
-    " then have values appended for subsequent lines
-    let wiped = {}
-    while name != ""
-        " Look up a name to variable mapping
-        if has_key(s:PropertyVars, name)
-            let type = get(s:PropertyTypes, name, "normal")
-            if type == "normal"
-                exe "let" s:PropertyVars[name]."=val"
-            elseif type == "dict"
-                if !has_key(wiped, name)
-                    " Wipe the original value if needed
-                    let wiped[name] = 1
-                    exe "let" s:PropertyVars[name]."={}"
-                endif
-                let parts = split(val, ',')
-                for part in parts
-                    let [k,v] = split(part, ':')
-                    " Strip spaces
-                    let k = matchlist(k, '^\s*\(.*\S\)\s*$')[1]
-                    let v = matchlist(v, '^\s*\(.*\S\)\s*$')[1]
-                    exe "let" s:PropertyVars[name]."[k]=v"
-                endfor
-            elseif type == "nestedlist"
-                if !has_key(wiped, name)
-                    " Wipe the original value if needed
-                    let wiped[name] = 1
-                    exe "let" s:PropertyVars[name]."=[]"
-                endif
-                let parts = split(val, '\s\+')
-                exe "call add("s:PropertyVars[name].",parts)"
-            elseif type == "list"
-                if !has_key(wiped, name)
-                    " Wipe the original value if needed
-                    let wiped[name] = 1
-                    exe "let" s:PropertyVars[name]."=[]"
-                endif
-                let parts = split(val, '\s\+')
-                exe "call extend("s:PropertyVars[name].",parts)"
-            endif
-        endif
-        let propertyline += 1
-        let [name, val] = s:GetNextProperty(drawerline, propertyline)
-    endwhile
-endfunction
-call s:LoadFileVars()
-" 1}}}
-" Folding support {{{1
-setlocal foldmethod=indent
-setlocal foldtext=getline(v:foldstart).\"\ ...\"
-setlocal fillchars+=fold:\ 
-" 1}}}
 " Mappings {{{1
-call s:Map("cb", "InsertCheckbox")
-call s:Map("cc", "CheckboxToggle")
-call s:Map("cv", "PromptTaskState")
-call s:Map("cs", "NextTaskState")
-call s:Map("ct", "LoadTaskLink")
-call s:Map("cl", "LoadLink")
-call s:Map("ca", "ArchiveDone")
-call s:Map("ce", "UpdateTimeTotal")
-"1}}}
 
-" Todo entry macros
-" ds - Datestamp {{{1
-iab ds <C-R>=strftime("%Y-%m-%d")<CR>
-" cn, \cn - New todo entry {{{1
-exe 'map <LocalLeader>cn o'.vimtodo#TodoParseTaskState(
-            \g:todo_states[0][0])["state"].' ds '
-exe 'iab cn '.vimtodo#TodoParseTaskState(g:todo_states[0][0])["state"].
-            \' <C-R>=strftime("%Y-%m-%d")<CR>'
-"1}}}
+" <Plug> mappings that users can map alternate keys to {{{2
+" if they choose not to map default keys (or otherwise)
+nnoremap <script> <silent> <buffer> <Plug>TodotxtIncrementDueDateNormal :<C-u>call <SID>ChangeDueDateWrapper(1, "\<Plug>TodotxtIncrementDueDateNormal")<CR>
+vnoremap <script> <silent> <buffer> <Plug>TodotxtIncrementDueDateVisual :call <SID>ChangeDueDateWrapper(1, "\<Plug>TodotxtIncrementDueDateVisual")<CR>
+nnoremap <script> <silent> <buffer> <Plug>TodotxtDecrementDueDateNormal :<C-u>call <SID>ChangeDueDateWrapper(-1, "\<Plug>TodotxtDecrementDueDateNormal")<CR>
+vnoremap <script> <silent> <buffer> <Plug>TodotxtDecrementDueDateVisual :call <SID>ChangeDueDateWrapper(-1, "\<Plug>TodotxtDecrementDueDateVisual")<CR>
 
-" Checkboxes
-" s:InsertCheckbox {{{1
-" Make a checkbox at the beginning of the line, removes any preceding bullet
-" point dash
-function! s:InsertCheckbox()
-    echo "Insert checkbox"
-    if match(getline('.'), '^\s*\[.\]') == -1
-        let oldpos=getpos(".")
-        s/^\(\s*\)\?\(- \)\?/\1[ ] /
-        call setpos(".", oldpos)
-    endif
-endfunction
-"1}}}
-" s:CheckboxToggle {{{1
-function! s:CheckboxToggle()
-    echo "Toggle checkbox"
-    let line=getline(".")
-    let idx=match(line, "\\[[^]]\\]")
-    if idx != -1
-        for group in g:todo_checkbox_states
-            let stateidx = 0
-            while stateidx < len(group)
-                if group[stateidx] == line[idx+1]
-                    let stateidx=stateidx + 1
-                    if stateidx >= len(group)
-                        let stateidx = 0
-                    endif
-                    let val=group[stateidx]
-                    let parts=[line[0:idx],line[idx+2:]]
-                    call setline(".", join(parts, val))
-                    return
-                endif
-                let stateidx=stateidx + 1
-            endwhile
-        endfor
-    endif
-endfunction
-"1}}}
+noremap  <script> <silent> <buffer> <Plug>DoToggleMarkAsDone :call todo#ToggleMarkAsDone('')<CR>
+                \:silent! call repeat#set("\<Plug>DoToggleMarkAsDone")<CR>
+noremap  <script> <silent> <buffer> <Plug>DoCancel :call todo#ToggleMarkAsDone('Cancelled')<CR>
+                \:silent! call repeat#set("\<Plug>DoCancel")<CR>
 
-" Task status
-" s:NextTaskState {{{1
-function! s:NextTaskState()
-    echo "Next task state"
-    let [oldstate, idx] = s:GetState(".")
-    if idx != -1
-        for group in g:todo_states
-            let stateidx = 0
-            while stateidx < len(group)
-                let teststate = vimtodo#TodoParseTaskState(group[stateidx]
-                    \)["state"]
-                if teststate == oldstate
-                    let stateidx=(stateidx + 1) % len(group)
-                    " Skip | separator
-                    if group[stateidx] == "|"
-                        let stateidx=(stateidx + 1) % len(group)
-                    endif
-                    let val=vimtodo#TodoParseTaskState(
-                        \group[stateidx])["state"]
-                    call s:SetTaskState(val, oldstate, idx)
-                    return
-                endif
-                let stateidx=stateidx + 1
-            endwhile
-        endfor
-    endif
-endfunction
-"1}}}
-" s:PromptTaskState {{{1
-function! s:PromptTaskState()
-    let [oldstate, idx] = s:GetState(".")
-    call s:NewScratchBuffer("StateSelect", 1)
-    call append(0, "Pick the new task state")
-    let statekeys = {}
-    for group in g:todo_states
-        let promptlist = []
-        for statestr in group
-            if statestr == "|"
-                continue
-            endif
-            let state = vimtodo#TodoParseTaskState(statestr)
-            if state["key"] != ""
-                call add(promptlist, state["state"]." (".state["key"].")")
-                let statekeys[state["key"]] = state["state"]
-            endif
-        endfor
-        if len(promptlist)
-            call append(line("$"), "    ".join(promptlist, ", "))
-        endif
-    endfor
-    echo
-    for key in keys(statekeys)
-        exe "nnoremap <buffer> <silent> ".key.
-                    \" :call <SID>SelectTaskState(\"".statekeys[key]."\"".
-                    \",\"".oldstate."\",".idx.")<CR>"
-    endfor
-    call append(line("$"), "    Press Backspace to remove any existing state")
-    exe "nnoremap <buffer> <silent> <BS> :call <SID>SelectTaskState(".
-                \'"","'.oldstate.'", '.idx.')<CR>'
-    call append(line("$"), "    Press Space to cancel")
-    nnoremap <buffer> <silent> <Space> :bd<CR>
-    setlocal nomodifiable " Make the buffer read only
-endfunction
-"1}}}
-" s:SelectTaskState {{{1
-function! s:SelectTaskState(state, oldstate, idx)
-    bdelete
-    call s:SetTaskState(a:state, a:oldstate, a:idx)
-endfunction
-"1}}}
-" s:SetTaskState {{{1
-function! s:SetTaskState(state, oldstate, idx)
-    let line = getline(".")
-    if a:idx > 0
-        let parts=[line[0:a:idx-1],line[a:idx+len(a:oldstate):]]
-    elseif a:idx == -1
-        let parts=["", " ".line]
-    else
-        let parts=["",line[len(a:oldstate):]]
-    endif
-    if a:state != ""
-        call setline(".", join(parts, a:state))
-    else
-        " Remove the state
-        call setline(".", join(parts, "")[1:])
-    endif
-    " Logging code
-    " Log all states
-    if g:todo_log_into_drawer != ""
-        let log=a:state
-        if log != "" " Don't log removing a state
-            let drawerline = s:FindOrMakeDrawer(g:todo_log_into_drawer,
-                \line("."))
-            call append(drawerline,
-                        \ matchstr(getline(drawerline), "^\\s\\+").
-                        \repeat(" ", &shiftwidth).
-                        \log.": ".strftime("%Y-%m-%d %H:%M:%S"))
-        endif
-    endif
-    " Logging done time
-    if g:todo_log_done == 1
-        let nextline = line(".") + 1
-        let closedregex = '^\s\+CLOSED:'
-        if s:IsDoneState(a:state)
-            let closedstr = matchstr(getline("."), "^\\s\\+").
-                        \ repeat(" ",&shiftwidth).
-                        \ "CLOSED: ".strftime("%Y-%m-%d %H:%M:%S")
-            " Set the CLOSED: status line
-            if getline(nextline) !~ closedregex
-                " Preserve whether the fold was open or closed for the
-                " appended line
-                let foldclosed = foldclosed(line(".") + 1)
-                call append(".", closedstr)
-                if foldclosed == -1
-                    normal jzok
-                endif
-            else
-                call setline(nextline, closedstr)
-            endif
-        else
-            " Delete any CLOSED: status line if it exists
-            if getline(nextline) =~ closedregex
-                if foldclosed(nextline) == -1
-                    " Need to temporarily open the fold if it is closed
-                    normal jddk
-                else
-                    " Delete next line
-                    normal jzoddzck
-                endif
-            endif
-        endif
-    endif
-endfunction
-"1}}}
+" Default key mappings {{{2
+if !exists("g:Todo_txt_do_not_map") || ! g:Todo_txt_do_not_map
+" Sort todo by (first) context {{{3
+    noremap  <script> <silent> <buffer> <localleader>sc :call todo#HierarchicalSort('@', '', 1)<CR>
+    noremap  <script> <silent> <buffer> <localleader>scp :call todo#HierarchicalSort('@', '+', 1)<CR>
 
-" Task Links
-" s:LoadTaskLink {{{1
-"   Provides a link to a web based task manager
-"   Need to set the todo_taskurl and todo_browser variables in .vimrc
-"   E.g.
-"   let todo_browser="gnome-open"
-"   let todo_taskurl="http://www.example.com/tasks/?id=%s"
-"   (The %s will be replaced with the task id)
-function! s:LoadTaskLink()
-    let tid=matchstr(getline("."), "tid\\d\\+")
-    if tid != ""
-        let tid = matchstr(tid, "\\d\\+")
-        let taskurl = substitute(g:todo_taskurl, "%s", tid, "")
-        call system(shellescape(g:todo_browser) . " " . shellescape(taskurl))
-        echo "Loading Task"
-    else
-        echo "No Task ID found"
-    endif
-endfunction
-"1}}}
-" s:LoadLink - URL Opening {{{1
-" Uses todo_browser
-function! s:LoadLink()
-    let url=matchstr(getline("."), "https\\?://\\S\\+")
-    if url != ""
-        call system(shellescape(g:todo_browser) . " " . shellescape(url))
-        echo "Loading URL"
-    else
-        echo "No URL Found"
-    endif
-endfunction
-"1}}}
+" Sort todo by (first) project {{{3
+    noremap  <script> <silent> <buffer> <localleader>sp :call todo#HierarchicalSort('+', '',1)<CR>
+    noremap  <script> <silent> <buffer> <localleader>spc :call todo#HierarchicalSort('+', '@',1)<CR>
 
-" Task searching
-" s:TaskSearch {{{1
-" daterange should be a list - [start, end] where start, end are numbers
-" relative to today (0 = today, 1 = tomorrow, -1 = yesterday, -7 = this time
-" last week). Use a blank list to not filter by date.
-function! s:TaskSearch(daterange, ...)
-    " Get comparable versions of the dates
-    if a:daterange != []
-        let startdate = str2nr(strftime(
-                    \"%Y%m%d", localtime() + a:daterange[0] * 86400))
-        let enddate = str2nr(strftime(
-                    \"%Y%m%d", localtime() + a:daterange[1] * 86400))
-    endif
-    " Use vimgrep to find any task header lines
-    if exists("g:todo_files")
-        " Clear any existing list - we're using vimgrepadd
-        call setloclist(0, [])
-        for f in g:todo_files
-            try
-                exe 'lvimgrepadd /^\s*[A-Z]\+\s/j '.f
-            catch /^Vim(\a\+):E480:/
-            endtry
-        endfor
-    else
-        try
-            lvimgrep /^\s*[A-Z]\+\s/j %
-        catch /^Vim(\a\+):E480:/
-        endtry
-    endif
-    let results = []
-    " Now filter these
-    for d in getloclist(0)
-        let matched = 1
-        for pat in a:000
-            if match(d.text, pat) == -1
-                let matched = 0
-            endif
-        endfor
-        if a:daterange != []
-            " Filter by date
-            let date = s:ParseDate(matchstr(d.text,
-                        \'{\d\{4\}-\d\{1,2\}-\d\{1,2\}}'))
-            if date < startdate
-                let matched = 0
-            endif
-            if date > enddate
-                let matched = 0
-            endif
-        endif
-        if matched
-            call add(results, d)
-        endif
-    endfor
-    " Replace the results with the filtered results
-    call setloclist(0, results, 'r')
-    lw
-endfunction
-" 1}}}
-" s:ShowDueTasks {{{1
-function! s:ShowDueTasks(start, end)
-    " Start/end are number of days relative to today
-    " 0 == today, 1 == tomorrow, -1 == yesterday
-    " Make start/end the same number for a single say search
-    " Generate a regex to exclude all done states
-    let donere = '^\s*\('.join(s:GetDoneStates(), '\|').'\)\@!'
-    call s:TaskSearch([a:start, a:end], donere)
-endfunction
-"1}}}
-" ShowDueTasks command definitions {{{1
-command -buffer Today :call s:ShowDueTasks(0,0)
-command -buffer Tomorrow :call s:ShowDueTasks(1,1)
-command -buffer Week :call s:ShowDueTasks(0,7)
-command -buffer Overdue :call s:ShowDueTasks(-365,-1)
+" Sort tasks {{{3
+    nnoremap <script> <silent> <buffer> <localleader>s :call todo#Sort("")<CR>
+    nnoremap <script> <silent> <buffer> <localleader>s@ :call todo#Sort("@")<CR>
+    nnoremap <script> <silent> <buffer> <localleader>s+ :call todo#Sort("+")<CR>
 
-if !hasmapto(':Today')
-    map <buffer> <unique> <LocalLeader>cd :Today<CR>
+" Priorities {{{3
+    " TODO: Make vim-repeat work on inc/dec priority
+    noremap  <script> <silent> <buffer> <localleader>j :call todo#PrioritizeIncrease()<CR>
+    noremap  <script> <silent> <buffer> <localleader>k :call todo#PrioritizeDecrease()<CR>
+
+    noremap  <script> <silent> <buffer> <localleader>a :call todo#PrioritizeAdd('A')<CR>
+    noremap  <script> <silent> <buffer> <localleader>b :call todo#PrioritizeAdd('B')<CR>
+    noremap  <script> <silent> <buffer> <localleader>c :call todo#PrioritizeAdd('C')<CR>
+
+" Insert date {{{3
+if get(g:, "TodoTxtUseAbbrevInsertMode", 0)
+    inoreabbrev <script> <silent> <buffer> date: <C-R>=strftime("%Y-%m-%d")<CR>
+
+    inoreabbrev <script> <silent> <buffer> due: due:<C-R>=strftime("%Y-%m-%d")<CR>
+    inoreabbrev <script> <silent> <buffer> DUE: DUE:<C-R>=strftime("%Y-%m-%d")<CR>
+else
+    inoremap <script> <silent> <buffer> date<Tab> <C-R>=strftime("%Y-%m-%d")<CR>
+
+    inoremap <script> <silent> <buffer> due: due:<C-R>=strftime("%Y-%m-%d")<CR>
+    inoremap <script> <silent> <buffer> DUE: DUE:<C-R>=strftime("%Y-%m-%d")<CR>
 endif
-if !hasmapto(':Tomorrow')
-    map <buffer> <unique> <LocalLeader>cf :Tomorrow<CR>
-endif
-if !hasmapto(':Week')
-    map <buffer> <unique> <LocalLeader>cw :Week<CR>
-endif
-if !hasmapto(':Overdue')
-    map <buffer> <unique> <LocalLeader>cx :Overdue<CR>
-endif
-"1}}}
-" Task filter command definitions {{{1
-command -buffer -nargs=+ Filter :call s:TaskSearch([], <q-args>)
-"1}}}
 
-" Task reorganizing
-" s:ArchiveDone {{{1
-function! s:ArchiveDone()
-    let line=0
-    let startline=-1 " Start line of a task
-    let topstate="" " The state for the toplevel task
-    while line < line('$')
-        let line = line+1
-        let [state, idx] = s:GetState(line)
-        if idx == 0 " Start of a new task
-            " Archive the old task if it is relevant
-            if startline != -1 && s:IsDoneState(topstate)
-                " We removed a chunk of text, set our line number correctly
-                call s:ArchiveTask(startline, line - 1)
-                let line=startline
-            endif
-            " Set the state for the new task
-            let topstate=state
-            let startline=line
-        endif
-    endwhile
-    " Deal with the last task
-    if startline != -1 && s:IsDoneState(topstate)
-        call s:ArchiveTask(startline, line)
-    endif
+    noremap  <script> <silent> <buffer> <localleader>d :call todo#PrependDate()<CR>
+
+" Mark done {{{3
+    nmap              <silent> <buffer> <localleader>x <Plug>DoToggleMarkAsDone
+
+" Mark cancelled {{{3
+    nmap              <silent> <buffer> <localleader>C <Plug>DoCancel
+
+" Mark all done {{{3
+    noremap  <script> <silent> <buffer> <localleader>X :call todo#MarkAllAsDone()<CR>
+
+" Remove completed {{{3
+    nnoremap <script> <silent> <buffer> <localleader>D :call todo#RemoveCompleted()<CR>
+
+" Sort by due: date {{{3
+    nnoremap <script> <silent> <buffer> <localleader>sd :call todo#SortDue()<CR>
+" try fix format {{{3
+    nnoremap <script> <silent> <buffer> <localleader>ff :call todo#FixFormat()<CR>
+
+" increment and decrement due:date {{{3
+    nmap              <silent> <buffer> <localleader>p <Plug>TodotxtIncrementDueDateNormal
+    vmap              <silent> <buffer> <localleader>p <Plug>TodotxtIncrementDueDateVisual
+    nmap              <silent> <buffer> <localleader>P <Plug>TodotxtDecrementDueDateNormal
+    vmap              <silent> <buffer> <localleader>P <Plug>TodotxtDecrementDueDateVisual
+
+endif
+
+" Additional options {{{2
+" Prefix creation date when opening a new line {{{3
+if exists("g:Todo_txt_prefix_creation_date")
+    nnoremap <script> <silent> <buffer> o o<C-R>=strftime("%Y-%m-%d")<CR> 
+    nnoremap <script> <silent> <buffer> O O<C-R>=strftime("%Y-%m-%d")<CR> 
+    inoremap <script> <silent> <buffer> <CR> <CR><C-R>=strftime("%Y-%m-%d")<CR> 
+endif
+
+" Functions for maps {{{1
+function! s:ChangeDueDateWrapper(by_days, repeat_mapping)
+    call todo#CreateNewRecurrence(0)
+    call todo#ChangeDueDate(a:by_days, 'd', '')
+    silent! call repeat#set(a:repeat_mapping, v:count)
 endfunction
-" 1}}}
-" s:ArchiveTask - Archives a range of lines {{{1
-function! s:ArchiveTask(startline, endline)
-    if match(g:todo_done_file, '/') == 0 || match(g:todo_done_file, '\~') == 0
-        " Absolute path, don't add the current dir
-        let filename=g:todo_done_file
+
+" Folding {{{1
+" Options {{{2
+setlocal foldmethod=expr
+setlocal foldexpr=TodoFoldLevel(v:lnum)
+setlocal foldtext=TodoFoldText()
+
+" Go to first completed task
+let oldpos=getcurpos()
+if(!exists("g:Todo_fold_char"))
+    let g:Todo_fold_char='@'
+    let base_pos=search('^x\s', 'ce')
+    " Get next completed task
+    let first_incomplete = search('^\s*[^<x\s>]')
+    if (first_incomplete < base_pos)
+        " Check if all tasks from
+        let g:Todo_fold_char='x'
+    endif
+    call setpos('.', oldpos)
+endif
+
+function! s:get_contextproject(line) abort "{{{2
+    return matchstr(getline(a:line), g:Todo_fold_char.'[^ ]\+')
+endfunction "}}}3
+
+" TodoFoldLevel(lnum) {{{2
+function! TodoFoldLevel(lnum)
+    let this_context = s:get_contextproject(a:lnum)
+    let next_context = s:get_contextproject(a:lnum - 1)
+
+    if g:Todo_fold_char == 'x'
+        " fold on cmpleted task
+        return  match(getline(a:lnum),'\C^x\s') + 1
+    endif
+
+    let fold_level = 0
+
+    if this_context ==# next_context
+        let fold_level = '1'
     else
-        " Non-absolute path
-        let filename=fnamemodify(expand("%"),":p:h")."/".g:todo_done_file
+        let fold_level = '>1'
     endif
-    exe a:startline.",".a:endline."w! >>".filename
-    exe a:startline.",".a:endline."d"
-endfunction
-" 1}}}
 
-" Automatically filled in fields
-" s:UpdateTimeTotal {{{1
-" Updates any total time values for the current task
-function! s:UpdateTimeTotal()
-    let time_re = '\[\([0-9.]\+\)h\]'
-    let totaltimes = {}
-    let linenum = 1
-    let oldfilelen = line("$")
-    while linenum <= line("$")
-        let m = matchlist(getline(linenum), time_re)
-        if m != []
-            let currtask = s:GetCurrentTask(linenum)
-            let drawerline = s:FindOrMakeDrawer("INFO", currtask[0])
-            let currtotal = get(totaltimes, drawerline, 0)
-            let totaltimes[drawerline] = currtotal + str2float(m[1])
-        endif
-        let linenum += 1
-        " Skip ahead if the file grew in length because we added a drawer
-        let linenum += (line("$") - oldfilelen)
-        let oldfilelen = line("$")
-    endwhile
-    " Update the drawers here (in reverse order as updating will likely change
-    " line numbers)
-    for drawer in reverse(sort(keys(totaltimes)))
-        call s:SetProperty(drawer, "TOTALTIME",
-            \printf("%.2f", totaltimes[drawer]))
-    endfor
+    return fold_level
 endfunction
-" Command definition
-command -buffer UpdateTimeTotal :call s:UpdateTimeTotal()
-" 1}}}
 
-" Restore the old compatible mode setting {{{1
+" TodoFoldText() {{{2
+function! TodoFoldText()
+    let this_context = s:get_contextproject(v:foldstart)
+    if g:Todo_fold_char == 'x'
+        let this_context = 'Completed tasks'
+    endif
+    " The text displayed at the fold is formatted as '+- N Completed tasks'
+    " where N is the number of lines folded.
+    return '+' . v:folddashes . ' '
+                \ . (v:foldend - v:foldstart + 1)
+                \ .' '. this_context.' '
+endfunction
+
+" Restore context {{{1
 let &cpo = s:save_cpo
-"1}}}
-" vim:foldmethod=marker
+
+" vim: tabstop=4 shiftwidth=4 softtabstop=4 expandtab foldmethod=marker

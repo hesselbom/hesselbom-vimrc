@@ -7,3 +7,4 @@ Makefile
 *.bundle
 .netrwhist
 .vim/view
+new-vim

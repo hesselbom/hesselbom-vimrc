@@ -56,6 +56,7 @@ set wildignore+=.sass-cache
 set wildignore+=.modgit
 set wildignore+=.tmp
 set wildignore+=.next
+set wildignore+=.expo
 set wildignore+=.tmp-es6
 set wildignore+=node_modules
 set wildignore+=mage--*
@@ -81,7 +82,6 @@ vnoremap <C-k> 5k
 
 " CTags
 nnoremap <leader>. :CtrlPTag<cr>
-command Todos :tj TODO
 
 " Scroll
 set scrolloff=7
@@ -141,12 +141,19 @@ autocmd FileType php,phtml set omnifunc=phpcomplete#CompletePHP
 au FileType jade setl sw=2 sts=2 et
 au FileType sass setl sw=2 sts=2 shiftwidth=2 et
 
-au BufRead,BufNewFile todo.txt,*.todo.txt,recur.txt,*.todo set filetype=todo
 au BufRead,BufNewFile *.styl set syntax=stylus
 au BufRead,BufNewFile *.ejs set syntax=ejs
 au BufRead,BufNewFile *.hbs set syntax=mustache
 
 autocmd BufLeave * ccl
+
+" https://github.com/vim-scripts/todo-txt.vim?tab=readme-ov-file
+" Use todo#complete as the omni complete function for todo files
+au filetype todo setlocal omnifunc=todo#complete
+" Auto complete projects
+" au filetype todo imap <buffer> + +<C-X><C-O>
+" Auto complete contexts
+" au filetype todo imap <buffer> @ @<C-X><C-O>
 
 " Save view and folds
 autocmd BufWinLeave *.* mkview
@@ -154,6 +161,7 @@ autocmd BufWinEnter *.* silent loadview
 
 " Global variables
 let mapleader = ","
+let maplocalleader = "-"
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_max_height = 20
 let g:ctrlp_max_files = 100000

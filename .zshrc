@@ -80,6 +80,14 @@ export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="$PATH:/Users/hesselbom/Documents/sdks/flutter/bin"
+
+# export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
+# export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+# export CPPFLAGS="-I/opt/homebrew/opt/openjdk@17/include"
+
+export JAVA_HOME=$(/usr/libexec/java_home)
+export PATH="$JAVA_HOME:$PATH"
+
 PHP_AUTOCONF="/usr/local/bin/autoconf"
 source ~/.bash_aliases
 
