@@ -85,8 +85,9 @@ export PATH="$PATH:/Users/hesselbom/Documents/sdks/flutter/bin"
 # export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
 # export CPPFLAGS="-I/opt/homebrew/opt/openjdk@17/include"
 
-export JAVA_HOME=$(/usr/libexec/java_home)
-export PATH="$JAVA_HOME:$PATH"
+# Let jenv set JAVA_HOME automatically
+# export JAVA_HOME=$(/usr/libexec/java_home)
+# export PATH="$JAVA_HOME:$PATH"
 
 PHP_AUTOCONF="/usr/local/bin/autoconf"
 source ~/.bash_aliases
@@ -101,3 +102,19 @@ if [ -f '/Users/hesselbom/Documents/google-cloud-sdk/path.zsh.inc' ]; then . '/U
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/hesselbom/Documents/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/hesselbom/Documents/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Enable building KOReader
+# export PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:$(brew --prefix)/opt/gnu-getopt/bin:$(brew --prefix)/opt/make/libexec/gnubin:$(brew --prefix)/opt/util-linux/bin:${PATH}"
+# export ANDROID_NDK_HOME=~/Library/Android/sdk/ndk/23.2.8568313
+# export ANDROID_SDK_ROOT=~/Library/Android/sdk
+
+# Jenv setup
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+# jenv enable-plugin export

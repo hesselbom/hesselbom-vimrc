@@ -200,3 +200,19 @@ nnoremap <Leader>trai /\s\+$<CR>
 nnoremap <Leader>s :%s///gn \| :g/<CR>
 
 let g:rootmarkers = ['.projectroot', '.git', '.hg', '.svn', '.bzr', '_darcs', 'build.xml', '.p4ignore']
+
+" copilot
+let g:copilot_node_command = "~/.nvm/versions/node/v18.18.0/bin/node"
+
+" Limit syntax highlight width everywhere
+set synmaxcol=200
+
+" Disable syntax highlighting for large files (e.g., big JSON)
+augroup LargeFile
+  autocmd!
+  autocmd BufReadPre *
+    \ if getfsize(expand('<afile>')) > 500000 |
+    \   setlocal syntax=off nospell nolist nowrap nofoldenable noshowmatch |
+    \   setlocal synmaxcol=200 nocursorline nocursorcolumn |
+    \ endif
+augroup END
